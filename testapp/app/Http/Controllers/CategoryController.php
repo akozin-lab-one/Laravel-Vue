@@ -17,7 +17,7 @@ class CategoryController extends Controller
             $categories = Category::paginate(6);
             if (!$categories) {
                 return response()->json([
-                    'message' => 'product not found',
+                    'message' => 'category not found',
                     'status' => 404
                 ], 404);
             }
@@ -36,7 +36,7 @@ class CategoryController extends Controller
             $category = Category::find($id);
             if (!$category) {
                 return response()->json([
-                    'message' => 'product not found',
+                    'message' => 'category not found',
                     'status' => 404
                 ], 404);
             }
@@ -93,13 +93,11 @@ class CategoryController extends Controller
 
         public function update(Request $request, $id)
         {
-            // dd($id);
-            // $request['id'] = $id;
             $this->update_validation($request);
             try{
                 $category = new Category;
                 $category =  $category->findorFail($id);
-                $category->update($request->all());
+                $status = $category->update($request->all());
             }catch (Exception $e) {
                 return response()->json([
                     'message' => $e->message(),

@@ -10,6 +10,8 @@ class Owner extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'phone_number', 'address', 'user_id'];
+
     public function product(){
         return $this->hasMany(Product::class);
     }
