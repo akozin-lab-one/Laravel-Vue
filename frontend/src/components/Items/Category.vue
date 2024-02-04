@@ -7,20 +7,29 @@ const props = defineProps({
 });
 console.log(props);
 const route = ref('example');
+const isSidebarOpen = ref(false);
+
 const toggleVisibility = (element) => {
-    // console.log(element)
   if (element === 'hello') {
     isHelloVisible.value = !isHelloVisible.value;
     console.log(isHelloVisible.value);
   }
-  // You can add more elements and logic for toggling other elements
 };
 </script>
 
 <template>
-    <h1 class="text-blue-800">categories</h1>
+    <h1
+        :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
+        class="inline-flex items-center relative p-2 mt-2 ms-3 text-sm  rounded-lg md:block lg:block  focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 text-blue-800">
+        categories
+    </h1>
     <div class=" flex justify-end my-3">
-        <button class="bg-blue-700 py-2 px-2 text-white rounded-md"><i class="fa-solid fa-plus text-white me-2 "></i> Add Category</button>
+        <router-link to="/category/addcategory">
+            <button class="bg-blue-700 py-2 px-2 text-white rounded-md">
+                <i class="fa-solid fa-plus text-white me-2 "></i> Add Category
+            </button>
+        </router-link>
+
     </div>
     <div class=" flex my-4">
         <h5 class="pt-2">Show :</h5>

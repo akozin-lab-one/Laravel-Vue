@@ -32,6 +32,8 @@ const toggleSidebar = () => {
         
     </div>
     <div class="mx-4">
-        <router-view></router-view>
+        <router-view >
+
+        </router-view>
     </div>
 </template>
