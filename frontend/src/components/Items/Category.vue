@@ -2,10 +2,7 @@
 import { ref } from 'vue';
 
 const isHelloVisible = ref(true);
-const props = defineProps({
-  props: Array,
-});
-console.log(props);
+
 const route = ref('example');
 const isSidebarOpen = ref(false);
 
@@ -15,6 +12,8 @@ const toggleVisibility = (element) => {
     console.log(isHelloVisible.value);
   }
 };
+const props = defineProps(['isSidebarOpen']);
+console.log(props.isSidebarOpen);
 </script>
 
 <template>
@@ -71,7 +70,7 @@ const toggleVisibility = (element) => {
     
 
 <div class="relative overflow-x-auto">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <table class="w-[80%] mx-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-white uppercase  bg-blue-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">

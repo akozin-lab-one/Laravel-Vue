@@ -9,7 +9,9 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@fawmi/vue-google-maps": "^0.9.79",
         "@tinymce/tinymce-vue": "^5.1.1",
+        "axios": "^1.6.7",
         "vue": "^3.3.11",
         "vue-quill-editor": "^3.0.6",
         "vue-router": "^4.2.5"

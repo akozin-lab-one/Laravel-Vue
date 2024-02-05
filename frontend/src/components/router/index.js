@@ -4,8 +4,12 @@ import Category from '../Items/Category.vue'
 import AddCategory from '../Items/CreateCategory.vue'
 import AddItem from '../Items/CreateItem.vue'
 import NotFound from '../Items/NotFound.vue';
+import Open from '../Open.vue'
 
 const routes = [{
+        path: '/',
+        component: Open,
+    }, {
         path: '/items',
         component: Items,
     },
