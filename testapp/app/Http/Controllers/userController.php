@@ -18,7 +18,6 @@ class userController extends Controller
 
     //getmethod
     public function Dashboard() {
-        // dd(Auth::user());
         if (Auth::user()) {
             return redirect()->route('product#main');
         }

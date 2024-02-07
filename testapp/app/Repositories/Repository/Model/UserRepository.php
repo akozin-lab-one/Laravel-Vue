@@ -20,12 +20,43 @@ class UserRepository extends Repository{
 
     public function find($id)
     {
-        return $this->model->findorFail($id);
+        try {
+            $user  = $this->model->findorFail($id);
+            if (!$user) {
+
+                    return response()->json([
+                        'message' => 'user not found',
+                        'status' => 404
+                    ], 404);
+
+            }
+            return $user;
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->message(),
+                'status' => 500
+            ], 500);
+        }
     }
 
     public function get()
     {
-        return $this->model->all();
+
+        try {
+            $users  = $$this->model->all();
+            if (!$users) {
+                    return response()->json([
+                        'message' => 'users not found',
+                        'status' => 404
+                    ], 404);
+            }
+            return $users;
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->message(),
+                'status' => 500
+            ], 500);
+        }
     }
 
     public function create(Request $request)
@@ -51,6 +82,7 @@ class UserRepository extends Repository{
 
     public function update(Request $request)
     {
+
         $this->update_validation($request);
         try{
             $this->model =  $this->model->findorFail($request->id);

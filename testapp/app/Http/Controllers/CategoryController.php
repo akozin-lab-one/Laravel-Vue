@@ -51,7 +51,12 @@ class CategoryController extends Controller
 
         //createPage
         public function create(Request $request){
-            $this->create_validation($request);
+            $validationResult = $this->create_validation($request);
+
+            if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                return $validationResult;
+            }
+
             try{
                 $category = new Category;
                 $category->name = $request->name;
@@ -62,11 +67,12 @@ class CategoryController extends Controller
                 return $category;
             } catch (Exception $e) {
                 return response()->json([
-                    'message' => $e->message(),
+                    'message' => $e->getMessage(),
                     'status' => 500
                 ], 500);
             }
         }
+
 
         //createvalidate
         public function create_validation($request)
@@ -89,14 +95,20 @@ class CategoryController extends Controller
                     'status' => 400
                 ],400);
             }
+
+            return true;
         }
 
-        public function update(Request $request, $id)
+        public function update(Request $request)
         {
-            $this->update_validation($request);
+            $validationResult = $this->update_validation($request);
+
+            if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                return $validationResult;
+            }
             try{
                 $category = new Category;
-                $category =  $category->findorFail($id);
+                $category =  $category->findorFail($request->id);
                 $status = $category->update($request->all());
             }catch (Exception $e) {
                 return response()->json([
@@ -134,19 +146,23 @@ class CategoryController extends Controller
 
         public function delete($id)
         {
+
             try {
-                $category = new Category;
-                $category->delete($id);
+                $category = Category::find($id);
+
                 if (!$category) {
                     return response()->json([
-                        'message' => 'category not found',
+                        'message' => 'Category not found',
                         'status' => 404
                     ], 404);
                 }
+
+                $category->delete();
+
                 return response()->json([
-                    'message' => 'delete category is done',
+                    'message' => 'Delete category is done',
                     'status' => 200
-                ],200);
+                ], 200);
             } catch (Exception $e) {
                 return response()->json([
                     'message' => $e->message(),
@@ -154,4 +170,6 @@ class CategoryController extends Controller
                 ], 500);
             }
         }
+
+
 }

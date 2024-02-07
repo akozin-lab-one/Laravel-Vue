@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Owner;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use TheSeer\Tokenizer\Exception;
+use Illuminate\Support\Facades\Validator;
 
 class OwnerController extends Controller
 {
         //allcategory
         public function allowner(){
             try {
-                $owners = Owner::all();
+                $owners = Owner::paginate();
                 if (!$owners) {
                     return response()->json([
                         'message' => 'owner not found',
@@ -48,7 +50,12 @@ class OwnerController extends Controller
 
             //createPage
             public function create(Request $request){
-                $this->create_validation($request);
+                $validationResult = $this->create_validation($request);
+
+                if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                    return $validationResult;
+                }
+
                 try{
                     $owner = new Owner;
                     $owner->name = $request->name;
@@ -88,12 +95,17 @@ class OwnerController extends Controller
                 }
             }
 
-            public function update(Request $request, $id)
+            public function update(Request $request)
             {
-                $this->update_validation($request);
+                $validationResult = $this->update_validation($request);
+
+                if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                    return $validationResult;
+                }
                 try{
                     $owner = new Owner;
-                    $owner =  $owner->findorFail($id);
+                    $owner =  $owner->findorFail($request->id);
+                    dd($owner->toArray());
                     $owner->update($request->all());
                 }catch (Exception $e) {
                     return response()->json([
@@ -132,14 +144,16 @@ class OwnerController extends Controller
             public function delete($id)
             {
                 try {
-                    $owner = new Owner;
-                    $owner->delete($id);
+                    $owner = Owner::find($id);
+
                     if (!$owner) {
                         return response()->json([
                             'message' => 'owner not found',
                             'status' => 404
                         ], 404);
                     }
+
+                    $owner->delete($id);
                     return response()->json([
                         'message' => 'delete owner is done',
                         'status' => 200

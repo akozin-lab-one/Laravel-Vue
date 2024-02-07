@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use TheSeer\Tokenizer\Exception;
 use Illuminate\Support\Facades\Validator;
 
@@ -49,7 +50,12 @@ class ProductController extends Controller
 
                 //createPage
                 public function create(Request $request){
-                    $this->create_validation($request);
+                    $validationResult = $this->create_validation($request);
+
+                    if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                        return $validationResult;
+                    }
+
                     try{
                         $product = new Product;
                         $product->name = $request->name;
@@ -101,12 +107,17 @@ class ProductController extends Controller
                     }
                 }
 
-                public function update(Request $request, $id)
+                public function update(Request $request)
                 {
-                    $this->update_validation($request);
+                    $validationResult = $this->update_validation($request);
+
+                    if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                        return $validationResult;
+                    }
+
                     try{
                         $product = new Product;
-                        $product =  $product->findorFail($id);
+                        $product =  $product->findorFail($request->id);
                         $product->update($request->all());
                     }catch (Exception $e) {
                         return response()->json([
@@ -150,15 +161,16 @@ class ProductController extends Controller
 
                 public function delete($id)
                 {
+
                     try {
-                        $product = new Product;
-                        $product->delete($id);
+                        $product = Product::find($id);
                         if (!$product) {
                             return response()->json([
                                 'message' => 'product not found',
                                 'status' => 404
                             ], 404);
                         }
+                        $product->delete($id);
                         return response()->json([
                             'message' => 'delete product is done',
                             'status' => 200
