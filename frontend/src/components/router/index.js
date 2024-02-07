@@ -4,7 +4,7 @@ import Category from '../Items/Category.vue'
 import AddCategory from '../Items/CreateCategory.vue'
 import AddItem from '../Items/CreateItem.vue'
 import NotFound from '../Items/NotFound.vue';
-import Open from '../Open.vue'
+import Open from '../section/Open.vue'
 
 const routes = [{
         path: '/',
@@ -33,7 +33,7 @@ const routes = [{
 
 const router = createRouter({
     history: createWebHistory(),
-    // component: NotFound,
+    component: NotFound,
     routes: routes
 });
 

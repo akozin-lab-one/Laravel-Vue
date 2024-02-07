@@ -1,25 +1,24 @@
 <script setup>
 import { ref } from 'vue';
 
-const isHelloVisible = ref(true);
+// const isHelloVisible = ref(true);
 const props = defineProps({
-  props: Array,
+    props: Array,
 });
 console.log(props);
-const route = ref('example');
-const isSidebarOpen = ref(false);
+// const route = ref('example');
+// const isSidebarOpen = ref(false);
 
-const toggleVisibility = (element) => {
-  if (element === 'hello') {
-    isHelloVisible.value = !isHelloVisible.value;
-    console.log(isHelloVisible.value);
-  }
-};
+// const toggleVisibility = (element) => {
+//     if (element === 'hello') {
+//         isHelloVisible.value = !isHelloVisible.value;
+//         console.log(isHelloVisible.value);
+//     }
+// };
 </script>
 
 <template>
-    <h1
-        :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
+    <h1 :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
         class="inline-flex items-center relative p-2 mt-2 ms-3 text-sm  rounded-lg md:block lg:block  focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 text-blue-800">
         items
     </h1>
@@ -60,82 +59,85 @@ const toggleVisibility = (element) => {
                 </li>
                 <li>
                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
-                    out</a>
-            </li>
-        </ul>
+                        out</a>
+                </li>
+            </ul>
+        </div>
+
+
     </div>
-    
+    <div>
 
-</div>
-<div>
-    
 
-<div class="relative overflow-x-auto">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-white uppercase  bg-blue-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Action <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    No <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Item <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Categories <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Description <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    price <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Owner <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Publish <i class="fa-solid fa-chevron-down text-xs"></i>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-4 justify-center py-4 font-medium flex text-gray-900 whitespace-nowrap dark:text-white">
-                    <button class="bg-green-400 px-2 py-1 rounded-md"><i class="fa-solid fa-pen text-white"></i></button>
-                    <button class="bg-red-400 px-2 py-1 rounded-md ms-5"><i class="fa-solid fa-trash text-white"></i></button>
-                </th>
-                <td class="px-4 py-4">
-                    1
-                </td>
-                <td class="px-6 py-4">
-                    Laptop
-                </td>
-                <td class="px-6 py-4">
-                    Laptop
-                </td>
-                <td class="px-6 py-4">
-                    Laptop
-                </td>
-                <td class="px-6 py-4">
-                    Laptop
-                </td>
-                <td class="px-6 py-4">
-                    Laptop
-                </td>
-                <td class="px-6 py-4">
-                    <div class="bg-blue-800 flex w-24 py-2 rounded-xl justify-between px-2">
-                        <!-- Use v-show to toggle visibility based on the 'isHelloVisible' data property -->
-                        <div @click="toggleVisibility('hello')" class="rounded-full bg-white text-white cursor-pointer" :class="{ 'hidden': isHelloVisible }">Hello</div>
-                        <p @click="toggleVisibility('hello')" class="text-white bg-white rounded-full cursor-pointer" :class="{ 'hidden': !isHelloVisible }">Hello</p>
-                    </div>
-                </td>
-            </tr>
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-white uppercase  bg-blue-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Action <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            No <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Item <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Categories <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Description <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            price <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Owner <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Publish <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row"
+                            class="px-4 justify-center py-4 font-medium flex text-gray-900 whitespace-nowrap dark:text-white">
+                            <button class="bg-green-400 px-2 py-1 rounded-md"><i
+                                    class="fa-solid fa-pen text-white"></i></button>
+                            <button class="bg-red-400 px-2 py-1 rounded-md ms-5"><i
+                                    class="fa-solid fa-trash text-white"></i></button>
+                        </th>
+                        <td class="px-4 py-4">
+                            1
+                        </td>
+                        <td class="px-6 py-4">
+                            Laptop
+                        </td>
+                        <td class="px-6 py-4">
+                            Laptop
+                        </td>
+                        <td class="px-6 py-4">
+                            Laptop
+                        </td>
+                        <td class="px-6 py-4">
+                            Laptop
+                        </td>
+                        <td class="px-6 py-4">
+                            Laptop
+                        </td>
+                        <td class="px-6 py-4">
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer" />
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                </div>
+                            </label>
+                        </td>
+                    </tr>
 
-        </tbody>
-    </table>
-</div>
+                </tbody>
+            </table>
+        </div>
 
-</div>
-</template>
+</div></template>

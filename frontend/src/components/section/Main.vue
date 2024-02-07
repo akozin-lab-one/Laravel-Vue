@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import App from './Side.vue';
-import Category from './Items/Category.vue';
+import Side from './Side.vue';
+// import Category from './Items/Category.vue';
 const isSidebarOpen = ref(false);
 
 const toggleSidebar = () => {
@@ -12,10 +12,9 @@ const toggleSidebar = () => {
 
 <template>
     <div>
-        <App :isSidebarOpen="isSidebarOpen" />
+        <Side :isSidebarOpen="isSidebarOpen" />
         <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
-            type="button" 
-            :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
+            type="button" :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
             class="inline-flex items-center relative p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg md:block lg:block hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
             @click="toggleSidebar">
             <span class="sr-only">Open sidebar</span>
@@ -27,11 +26,14 @@ const toggleSidebar = () => {
             </svg>
         </button>
     </div>
-    <div    :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
-            class="inline-flex items-center relative p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg md:block lg:block hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-        
+    <div :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
+        class="inline-flex items-center relative p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg md:block lg:block hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+
     </div>
-    <div class="mx-4">
-        <router-view :isSidebarOpen="isSidebarOpen"/>
+    <div :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
+        class="inline-flex items-center relative p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg md:block lg:block hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 mx-4">
+        <router-view v-slot="{ Component }">
+            <component :is="Component" :isSidebarOpen="isSidebarOpen"  />
+        </router-view>
     </div>
 </template>
