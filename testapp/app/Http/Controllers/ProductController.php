@@ -109,15 +109,19 @@ class ProductController extends Controller
 
                 public function update(Request $request)
                 {
-                    $validationResult = $this->update_validation($request);
-
-                    if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
-                        return $validationResult;
-                    }
-
                     try{
-                        $product = new Product;
-                        $product =  $product->findorFail($request->id);
+                        $product = Product::find($id);
+                        if (!$product) {
+                            return response()->json([
+                                'message' => 'product not found',
+                                'status' => 400
+                            ], 400)
+                        }
+                        $validationResult = $this->update_validation($request);
+
+                        if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                            return $validationResult;
+                        }
                         $product->update($request->all());
                     }catch (Exception $e) {
                         return response()->json([
@@ -171,10 +175,7 @@ class ProductController extends Controller
                             ], 404);
                         }
                         $product->delete($id);
-                        return response()->json([
-                            'message' => 'delete product is done',
-                            'status' => 200
-                        ],200);
+                        return $product;
                     } catch (Exception $e) {
                         return response()->json([
                             'message' => $e->message(),

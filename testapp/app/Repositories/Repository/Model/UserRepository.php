@@ -41,7 +41,6 @@ class UserRepository extends Repository{
 
     public function get()
     {
-
         try {
             $users  = $$this->model->all();
             if (!$users) {
@@ -61,45 +60,50 @@ class UserRepository extends Repository{
 
     public function create(Request $request)
     {
-        $this->create_validation($request);
+        $validateResult = $this->create_validation($request);
+        if ($validateResult !== null && $validateResult->getStatusCode() !== 200) {
+            return $validateResult;
+        }
         try{
             $this->model->name = $request->name;
             $this->model->email = $request->email;
             $this->model->password = bcrypt($request->password);
             $this->model->save();
-            Log::info("User created " . json_encode($this->model->email));
-            return redirect()->route('login');
-        }catch(QueryException $e){
-            DB::rollBack();
-            Log::alert("Query Exception " . $e->getMessage());
-            throw new Exception('Oops! Something went wrong!');
-        }catch(Throwable $e){
-            DB::rollBack();
-            Log::alert("Something is wrong with creating user " . $e->getMessage());
-            throw new Exception('Oops! Something went wrong!');
+            return redirect()->route('login')->with([
+                'message' => 'user',
+                'status' => 200
+            ])->json([
+                'message' => 'user',
+                'status' => 200
+            ], 200);
+            
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->message(),
+                'status' => 500
+            ], 500);
         }
     }
 
     public function update(Request $request)
     {
 
-        $this->update_validation($request);
+        $validateResult = $this->update_validation($request);
+        if ($validateResult !== null && $validateResult->getStatusCode() !== 200) {
+            return $validateResult;
+        }
         try{
             $this->model =  $this->model->findorFail($request->id);
             $this->model->update($request->all());
-            Log::info("User updated info " . json_encode($this->model->email));
-        }catch(ModelNotFoundException $e){
-            DB::rollBack();
-            Log::alert("Model Not Found Exception " . $e->getMessage());
-            throw new Exception('Oops! Something went wrong!');
-        }catch(QueryException $e){
-            DB::rollBack();
-            Log::alert("Query Exception " . $e->getMessage());
-            throw new Exception('Oops! Something went wrong!');
-        }catch(Throwable $e){
-            DB::rollBack();
-            Log::alert("Something is wrong with creating user " . $e->getMessage());
-            throw new Exception('Oops! Something went wrong!');
+            return response()->json([
+                'message' => 'User Updated info',
+                'status' => 200
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->message(),
+                'status' => 500
+            ], 500);
         }
     }
 
@@ -110,10 +114,16 @@ class UserRepository extends Repository{
             'email' => 'required|unique:users,email',
             'password' => 'required'
         ]);
-        // dd($validate->fails());
+
         if($validate->fails()){
-            Log::info("Creating user validation fail!" . $validate->errors());
-            throw new Exception("Validation Fail!" . $validate->errors());
+            $flatErrors = collect($validate->errors())->flatMap(function($e, $fileld){
+                return [$fileld => $e[0]];
+            });
+
+            return response()->json([
+                'message' => $flatErrors,
+                'status' => 400
+            ], 400);
         }
     }
 
@@ -125,8 +135,14 @@ class UserRepository extends Repository{
             'password' => 'required'
         ]);
         if($validate->fails()){
-            Log::info("Updating user validation fail!" . $validate->errors());
-            throw new Exception("Validation Fail!" . $validate->errors());
+            $flatErrors = collect($validate->errors())->flatMap(function($e, $fileld){
+                return [$fileld => $e[0]];
+            });
+
+            return response()->json([
+                'message' => $flatErrors,
+                'status' => 400
+            ], 400);
         }
     }
 

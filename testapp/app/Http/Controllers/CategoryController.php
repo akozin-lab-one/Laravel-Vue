@@ -99,16 +99,21 @@ class CategoryController extends Controller
             return true;
         }
 
-        public function update(Request $request)
+        public function update(Request $request, $id)
         {
-            $validationResult = $this->update_validation($request);
-
-            if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
-                return $validationResult;
-            }
             try{
-                $category = new Category;
-                $category =  $category->findorFail($request->id);
+                $category = new Category::find($id);
+                if (!$category) {
+                    return response()->json([
+                        'message' => 'category not found',
+                        'status' => 400
+                    ], 400);
+                }
+                $validationResult = $this->update_validation($request);
+
+                if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                    return $validationResult;
+                }
                 $status = $category->update($request->all());
             }catch (Exception $e) {
                 return response()->json([
@@ -159,10 +164,7 @@ class CategoryController extends Controller
 
                 $category->delete();
 
-                return response()->json([
-                    'message' => 'Delete category is done',
-                    'status' => 200
-                ], 200);
+                return $category;
             } catch (Exception $e) {
                 return response()->json([
                     'message' => $e->message(),

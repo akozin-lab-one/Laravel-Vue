@@ -17,19 +17,20 @@ Route::get('users', [userController::class, 'allUsers']);
 Route::get('categories', [CategoryController::class, 'allCategory']);
 Route::get('categories/{id}', [CategoryController::class, 'find']);
 Route::post('createcategory', [CategoryController::class, 'create']);
-Route::post('updatecategory', [CategoryController::class, 'update']);
+Route::patch('updatecategory/{id}', [CategoryController::class, 'update']);
 Route::delete('deletecategory/{id}', [CategoryController::class, 'delete']);
 
 // Owner
 Route::get('owner', [OwnerController::class, 'allowner']);
 Route::get('owner/{id}', [OwnerController::class, 'find']);
 Route::post('createowner', [OwnerController::class, 'create']);
-Route::post('updateowner', [OwnerController::class, 'update']);
+Route::patch('updateowner/{id}', [OwnerController::class, 'update']);
 Route::delete('deleteowner/{id}', [OwnerController::class, 'delete']);
 
 //items
 Route::get('items', [ProductController::class, 'allItem']);
 Route::get('items/{id}', [ProductController::class, 'find']);
 Route::post('createitem', [ProductController::class, 'create']);
-Route::post('updateitem', [ProductController::class, 'update']);
+// Route::post()
+Route::patch('updateitem/{id}', [ProductController::class, 'update']);
 Route::delete('deleteitem/{id}', [ProductController::class, 'delete']);

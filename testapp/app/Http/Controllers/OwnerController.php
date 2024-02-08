@@ -95,18 +95,25 @@ class OwnerController extends Controller
                 }
             }
 
-            public function update(Request $request)
+            public function update(Request $request, $id)
             {
-                $validationResult = $this->update_validation($request);
 
-                if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
-                    return $validationResult;
-                }
                 try{
-                    $owner = new Owner;
-                    $owner =  $owner->findorFail($request->id);
-                    dd($owner->toArray());
+                    $owner = Owner::find($id);
+                    if (!$owner) {
+                        return response()->json([
+                            'message' => 'owner not found',
+                            'status' => 400
+                        ], 400);                        
+                    }
+                    $validationResult = $this->update_validation($request);
+
+                    if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                        return $validationResult;
+                    }
+
                     $owner->update($request->all());
+                    return $owner;
                 }catch (Exception $e) {
                     return response()->json([
                         'message' => $e->message(),
@@ -154,10 +161,7 @@ class OwnerController extends Controller
                     }
 
                     $owner->delete($id);
-                    return response()->json([
-                        'message' => 'delete owner is done',
-                        'status' => 200
-                    ],200);
+                    return $owner;
                 } catch (Exception $e) {
                     return response()->json([
                         'message' => $e->message(),
