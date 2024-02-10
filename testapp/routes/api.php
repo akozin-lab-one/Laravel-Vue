@@ -17,6 +17,7 @@ Route::get('users', [userController::class, 'allUsers']);
 Route::get('categories', [CategoryController::class, 'allCategory']);
 Route::get('categories/{id}', [CategoryController::class, 'find']);
 Route::post('createcategory', [CategoryController::class, 'create']);
+Route::post('category/upload', [CategoryController::class, 'upload']);
 Route::patch('updatecategory/{id}', [CategoryController::class, 'update']);
 Route::delete('deletecategory/{id}', [CategoryController::class, 'delete']);
 
@@ -31,6 +32,6 @@ Route::delete('deleteowner/{id}', [OwnerController::class, 'delete']);
 Route::get('items', [ProductController::class, 'allItem']);
 Route::get('items/{id}', [ProductController::class, 'find']);
 Route::post('createitem', [ProductController::class, 'create']);
-// Route::post()
+Route::post('item/upload', [ProductController::class, 'upload']);
 Route::patch('updateitem/{id}', [ProductController::class, 'update']);
 Route::delete('deleteitem/{id}', [ProductController::class, 'delete']);

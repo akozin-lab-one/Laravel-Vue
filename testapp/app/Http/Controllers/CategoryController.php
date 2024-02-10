@@ -102,7 +102,7 @@ class CategoryController extends Controller
         public function update(Request $request, $id)
         {
             try{
-                $category = new Category::find($id);
+                $category = Category::find($id);
                 if (!$category) {
                     return response()->json([
                         'message' => 'category not found',
@@ -142,6 +142,43 @@ class CategoryController extends Controller
                     return [$fileld => $e[0]];
                 });
 
+                return response()->json([
+                    'errors'=> $flatErrors,
+                    'status' => 400
+                ],400);
+            }
+        }
+
+        public function upload(Request $request){
+            $validationResult = $this->upload_validation($request);
+
+            if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                return $validationResult;
+            }
+
+            try {
+                $path = 'storage/' . request('image')->store('categories');
+                return [
+                    'path' => $path
+                ];
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => $e->message(),
+                    'status' => 500
+                ], 500);
+            }
+        }
+
+        public function upload_validation($request){
+            $validate = Validator::make($request->all(), [
+                'image' => 'required | image',
+            ]);
+
+            if($validate->fails()){
+                $flatErrors = collect($validate->errors())->flatMap(function($e, $fileld){
+                    return [$fileld => $e[0]];
+                });
+                // dd($flatErrors);
                 return response()->json([
                     'errors'=> $flatErrors,
                     'status' => 400

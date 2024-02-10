@@ -107,6 +107,43 @@ class ProductController extends Controller
                     }
                 }
 
+                public function upload(Request $request){
+                    $validationResult = $this->uploadValidation($request);
+
+                    if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+                        return $validationResult;
+                    }
+
+                    try {
+                        $path = 'storage/' . request('image')->store('items');
+                        return [
+                            'path' => $path
+                        ];
+                    } catch (Exception $e) {
+                        return response()->json([
+                            'message' => $e->message(),
+                            'status' => 500
+                        ], 500);
+                    }
+                }
+
+                public function uploadValidation($request){
+                    $validate = Validator::make($request->all(), [
+                        'image' => 'required | image',
+                    ]);
+
+                    if($validate->fails()){
+                        $flatErrors = collect($validate->errors())->flatMap(function($e, $fileld){
+                            return [$fileld => $e[0]];
+                        });
+                        // dd($flatErrors);
+                        return response()->json([
+                            'errors'=> $flatErrors,
+                            'status' => 400
+                        ],400);
+                    }
+                }
+
                 public function update(Request $request)
                 {
                     try{
@@ -115,7 +152,7 @@ class ProductController extends Controller
                             return response()->json([
                                 'message' => 'product not found',
                                 'status' => 400
-                            ], 400)
+                            ], 400);
                         }
                         $validationResult = $this->update_validation($request);
 
