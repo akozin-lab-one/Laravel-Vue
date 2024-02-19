@@ -3,24 +3,24 @@
         <h5 class="text-xs flex">
             <router-link to="/category">
                 Categories
-            </router-link> 
-        <p class="ms-2">></p> 
+            </router-link>
+            <p class="ms-2">></p>
         </h5>
         <h5 class="text-xs text-blue-800 ms-3">Add Categories</h5>
     </div>
 
     <div>
         <h3 class="bg-blue-100 my-4 py-2 ps-2 rounded-md text-black">Add Categories</h3>
-        <form  action="">
+        <form action="">
             <div class="mb-4">
                 <label class="mb-2" for="">Category*</label>
-                <input :model="name" class="border mt-2 block w-[50%] ps-3 py-2 rounded-md text-base" type="text"
+                <input v-model="name" class="border mt-2 block w-[50%] ps-3 py-2 rounded-md text-base" type="text"
                     placeholder="Input Name">
             </div>
             <div @change="getFile" class="relative mb-4">
                 <label for="">Category Photo*</label>
                 <span class="text-gray-400 block text-xs">Recommended Size 400 x 200</span>
-                <input  class="hidden" type="file" id="fileInput" />
+                <input class="hidden" type="file" id="fileInput" />
                 <label for="fileInput"
                     class="border mt-2 block w-[30%] h-48 place-items-center ps-3 py-2 rounded-md text-base cursor-pointer">
                     <div class="absolute bottom-0 top-16 text-xs left-32">
@@ -29,7 +29,7 @@
                         </div>
                         <span class="block">Drag and Drop here</span>
                         <span class="text-center block">or</span>
-                        <span class="text-white block  bg-blue-800 text-xs p-2 rounded-md ">No file chosen</span>
+                        <span class="text-white block  bg-blue-800 text-xs p-2 rounded-md">No file chosen</span>
                     </div>
                 </label>
             </div>
@@ -55,7 +55,7 @@ export default {
         return {
             name: '',
             photo: '',
-            status : "0"
+            status: null
         };
     },
     methods: {
@@ -71,7 +71,7 @@ export default {
                 try {
                     let res = await axios.post('category/upload', formData, {
                         headers: {
-                            'Content-Type': 'multipart/form-data' 
+                            'Content-Type': 'multipart/form-data'
                         }
                     });
                     console.log(res);
@@ -85,20 +85,25 @@ export default {
             }
         },
 
-        async AddData(){
+        async AddData() {
             let formData = new FormData();
-            formData.append('image', this.photo);
+            formData.append('photo', this.photo.path);
             formData.append('name', this.name);
-            formData.append('status', this.status)
-            // console.log(this.status);
-            // let res = await axios.post('createcategory', formData, {
-            //             headers: {
-            //                 'Content-Type': 'multipart/form-data' // Corrected header name
-            //             }
-            //         });
-
-            // console.log(res);
+            formData.append('status', this.status ? 0 : 1);
+            formData.append('userId', 2);
+            console.log(this.status);
+            try {
+                let res = await axios.post('createcategory', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                console.log(res);
+            } catch (error) {
+                console.error("Error occurred while adding data:", error);
+            }
         }
+
     }
 };
 </script>

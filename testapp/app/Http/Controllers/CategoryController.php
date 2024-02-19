@@ -44,7 +44,7 @@ class CategoryController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->message(),
-                'status' => 500
+                'status' => $e->errors()
             ], 500);
         }
     }
@@ -53,7 +53,7 @@ class CategoryController extends Controller
         public function create(Request $request){
             $validationResult = $this->create_validation($request);
 
-            if ($validationResult !==  null && $validationResult->getStatusCode() !== 200) {
+            if ($validationResult !== null && $validationResult->getStatusCode() !== 200) {
                 return $validationResult;
             }
 
@@ -96,7 +96,10 @@ class CategoryController extends Controller
                 ],400);
             }
 
-            return true;
+            return response()->json([
+                'message' => "Your Category is successfully created",
+                'status' => 200
+            ], 200);
         }
 
         public function update(Request $request, $id)

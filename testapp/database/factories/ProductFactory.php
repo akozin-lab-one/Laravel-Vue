@@ -23,10 +23,10 @@ class ProductFactory extends Factory
         return [
             'name' =>$this->faker->name,
             'description' => $this->faker->paragraph($nbSentences = 3, $variableNbSentences = true),
-            'price' => $this->faker->randomDigit,
+            'price' => $faker->numerify('######'),
             'status' => $this->faker->boolean,
-            'condition' => $this->faker->word,
-            'type' => $this->faker->name,
+            // 'condition' => $this->faker->word,
+            // 'type' => $this->faker->name,
             'photo' => $this->faker->url,
             'user_id' => User::factory(),
             'category_id' => Category::factory(),

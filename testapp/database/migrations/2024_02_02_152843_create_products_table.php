@@ -20,8 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('owner_id');
             $table->boolean('status');
             $table->unsignedBigInteger('user_id');
-            $table->string('condition');
-            $table->string('type');
+            // $table->string('condition');
+            // $table->string('type');
             $table->string('photo');
             $table->timestamps();
         });

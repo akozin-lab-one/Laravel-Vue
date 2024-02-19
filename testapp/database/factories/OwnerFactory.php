@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,8 @@ class OwnerFactory extends Factory
             'name' => $this->faker->name,
             'phone_number' => $this->faker->phoneNumber,
             'address' =>$this->faker->address,
-            'user_id' => User::factory()
+            'user_id' => User::factory(),
+            // 'product_id' => Product::factory(),
         ];
     }
 }

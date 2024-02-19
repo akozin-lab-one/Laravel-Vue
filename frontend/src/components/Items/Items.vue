@@ -1,24 +1,38 @@
-<script setup>
-import { ref } from 'vue';
+<script>
+import axios from 'axios';
+export default {
+    data(){
+        return{
+            items : [],
+            links : []
+        }
+    }, 
+    methods:{
+        async getItems(){
+            let res = await axios.get('items');
+            console.log(res.data);
+            this.links = res.data.links;
+            this.items = res.data.data;
+            // console.log(this.items)
+        },
 
-// const isHelloVisible = ref(true);
-const props = defineProps({
-    props: Array,
-});
-console.log(props);
-// const route = ref('example');
-// const isSidebarOpen = ref(false);
-
-// const toggleVisibility = (element) => {
-//     if (element === 'hello') {
-//         isHelloVisible.value = !isHelloVisible.value;
-//         console.log(isHelloVisible.value);
-//     }
-// };
+        async getPageItems(url){
+            console.log(url);
+            let pageNumber = url.split('page=')[1];
+            const response = await axios.get('/items/?page=' + pageNumber);
+            console.log(response.data.data);
+            this.items = response.data.data;
+        }
+    },
+    mounted(){
+        this.getItems(),
+        this.getPageItems()
+    }
+}
 </script>
 
 <template>
-    <h1 :class="{ 'left-0': !isSidebarOpen, 'left-64': isSidebarOpen }"
+    <h1 
         class="inline-flex items-center relative p-2 mt-2 ms-3 text-sm  rounded-lg md:block lg:block  focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 text-blue-800">
         items
     </h1>
@@ -100,7 +114,7 @@ console.log(props);
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr v-for="item in items" :key="item.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row"
                             class="px-4 justify-center py-4 font-medium flex text-gray-900 whitespace-nowrap dark:text-white">
                             <button class="bg-green-400 px-2 py-1 rounded-md"><i
@@ -109,26 +123,26 @@ console.log(props);
                                     class="fa-solid fa-trash text-white"></i></button>
                         </th>
                         <td class="px-4 py-4">
-                            1
+                            {{item.id}}
                         </td>
                         <td class="px-6 py-4">
-                            Laptop
+                            {{item.name}}
                         </td>
                         <td class="px-6 py-4">
-                            Laptop
+                            {{item.category.name}}
                         </td>
                         <td class="px-6 py-4">
-                            Laptop
+                            {{item.Description}}
                         </td>
                         <td class="px-6 py-4">
-                            Laptop
+                            {{item.price}}
                         </td>
                         <td class="px-6 py-4">
-                            Laptop
+                            {{item.owner.name}}
                         </td>
                         <td class="px-6 py-4">
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" value="" class="sr-only peer" />
+                                <input type="checkbox" value="" class="sr-only peer" v-if="item.status === 0" checked />
                                 <div
                                     class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
                                 </div>
@@ -138,6 +152,43 @@ console.log(props);
 
                 </tbody>
             </table>
+            <div className="flex justify-end  lg:w-[85%] md:w-[85%] w-[95%] mx-auto mt-2">
+                <nav aria-label="Page navigation example">
+                    <ul class="flex items-center -space-x-px h-8 text-sm">
+                        <li>
+                            <a href="#" @click.prevent="previousPage"
+                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                :class="{ 'cursor-not-allowed': currentPage === 1 }">
+                                <span class="sr-only">Previous</span>
+                                <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M5 1 1 5l4 4" />
+                                </svg>
+                            </a>
+                        </li>
+                        <li v-for="link in links" :key="link.id">
+                            <p v-if="link.url" @click.prevent="getPageItems(link.url)"
+                                class="flex cursor-pointer items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                {{ link.label }}
+                            </p>
+                        </li>
+                        <li>
+                            <a href="#" @click.prevent="nextPage"
+                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                >
+                                <span class="sr-only">Next</span>
+                                <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 9 4-4-4-4" />
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
 
-</div></template>
+</div>
+</template>

@@ -13,7 +13,7 @@ class ProductController extends Controller
             //allcategory
             public function allItem(){
                 try {
-                    $products = Product::paginate(6);
+                    $products = Product::with('category:id,name', 'owner:id,name')->orderBy('created_at', 'desc')->paginate(6);
                     if (!$products) {
                         return response()->json([
                             'message' => 'products not found',
@@ -65,11 +65,11 @@ class ProductController extends Controller
                         $product->user_id = $request->userId;
                         $product->owner_id = $request->ownerId;
                         $product->status = $request->status;
-                        $product->condition = $request->condition;
-                        $product->type = $request->type;
+                        // $product->condition = $request->condition;
+                        // $product->type = $request->type;
                         $product->photo = $request->photo;
                         $product->save();
-                        return $owner;
+                        return $product;
                     } catch (Exception $e) {
                         return response()->json([
                             'message' => $e->message(),
@@ -88,9 +88,9 @@ class ProductController extends Controller
                         'price' => 'required',
                         'userId' => 'required', Rule::exists('user', 'id'),
                         'status' => 'required',
-                        'condition' => 'required',
-                        'type' => 'required',
-                        'phtot' => 'required',
+                        // 'condition' => 'required',
+                        // 'type' => 'required',
+                        'photo' => 'required',
                         'categoryId' => 'required', Rule::exists('categories', 'id'),
                         'ownerId' => 'required', Rule::exists('owners', 'id')
                     ]);

@@ -195,3 +195,4 @@ getCategories();
 
     </div>
 </template>
+<!-- create methods for add data -->

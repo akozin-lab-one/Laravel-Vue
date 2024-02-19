@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('map_Data')->nullable('true');
             $table->unsignedBigInteger('user_id');
+            // $table->unsignedBigInteger('product_id');
             $table->timestamps();
         });
     }

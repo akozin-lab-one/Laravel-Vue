@@ -1,5 +1,39 @@
 <script>
+import axios from 'axios';
+export default{
+    data(){
+        return {
 
+        };
+    },
+    methods:{
+        async getFile(e) {
+            // if (e.target.value) {
+            //     this.photo = e.target.files[0]; // Corrected to e.target.files[0]
+            //     console.log(this.photo);
+            // }
+            // if (this.photo) {
+            //     let formData = new FormData();
+            //     formData.append('image', this.photo);
+
+            //     try {
+            //         let res = await axios.post('item/upload', formData, {
+            //             headers: {
+            //                 'Content-Type': 'multipart/form-data'
+            //             }
+            //         });
+            //         console.log(res);
+            //         if (res) {
+            //             this.photo = res.data
+            //             console.log(this.photo)
+            //         }
+            //     } catch (error) {
+            //         console.error(error);
+            //     }
+            // }
+        },
+    },
+}
 </script>
 
 <template>
@@ -48,7 +82,7 @@
                         <!-- <input class="border mt-2 block w-[50%] ps-3 py-2 rounded-md text-base" type="text"
                     placeholder="Enter Price"> -->
                     </div>
-                    <div class="relative mb-4">
+                    <div @change="getFile" class="relative mb-4">
                         <label for="">Item Photo*</label>
                         <span class="text-gray-400 block text-xs">Recommended Size 400 x 200</span>
                         <input class="hidden" type="file" id="fileInput" />
